@@ -42,30 +42,30 @@ public sealed class Renderer
 
     public List<Ball> PerformBallPhysics(List<Ball> balls)
     {
+        List<Ball> newBalls = [];
+
         // TODO: Your code here
         foreach (Ball ball in balls)
         {
-            if (IsBallOutsideXBoundary(ball))
+            Ball newBall = ball.updatePosition();
+            
+            if (IsBallOutsideXBoundary(newBall))
             {
-                int index = balls.IndexOf(ball);
-                balls.Remove(ball);
-                Ball newBall = new Ball(ball.Position, new Vector2(-ball.Velocity.X, ball.Velocity.Y), ball.Size, ball.Color);
-                balls.Insert(index, newBall);
+                newBall = new Ball(ball.Position, new Vector2(-ball.Velocity.X, ball.Velocity.Y), ball.Size, ball.Color);
             }
-            if (IsBallOutsideYBoundary(ball))
+            if (IsBallOutsideYBoundary(newBall))
             {
-                int index = balls.IndexOf(ball);
-                balls.Remove(ball);
-                Ball newBall = new Ball(ball.Position, new Vector2(ball.Velocity.X, -ball.Velocity.Y), ball.Size, ball.Color);
-                balls.Insert(index, newBall);
+                newBall = new Ball(ball.Position, new Vector2(ball.Velocity.X, -ball.Velocity.Y), ball.Size, ball.Color);
             }
+
+            newBalls.Add(newBall);
+
             // If a ball is outside of the X bounds, flip the X velocity.
             // If a ball is outside of the Y bounds, flip the Y velocity.
             // Ensure no ball is outside of the boundary.
         }
-        return balls;
+        return newBalls;
     }
-
     private bool IsBallOutsideXBoundary(Ball ball)
     {
         //Right
