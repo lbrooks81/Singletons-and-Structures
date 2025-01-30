@@ -13,5 +13,11 @@ public struct Ball
     public float Size { get; init; } = 0f;
     public Color Color { get; init; } = Color.Empty;
 
-    public Ball() { }
+    public Ball(Vector2 position, Vector2 velocity, float size, Color color) 
+    {
+        Position = position;
+        Velocity = velocity;
+        Size = size;
+        Color = color;
+    }
 }

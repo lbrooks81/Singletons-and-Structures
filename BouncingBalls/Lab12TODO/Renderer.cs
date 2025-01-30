@@ -1,6 +1,6 @@
 ﻿/*
-* Name: [YOUR NAME HERE]
-* South Hills Username: [YOUR SOUTH HILLS USERNAME HERE]
+* Name: Logan Brooks
+* South Hills Username:
 */
 
 using System.Drawing;
@@ -17,32 +17,52 @@ public sealed class Renderer
     //Initial values: 10   10   200     200
     public Rectangle BoundingBox { get; private set; } = new Rectangle(10, 10, 200, 200);
 
+    private static Renderer instance;
     private Renderer() { } //Private constructor so it can't be constructed outside of this class
 
     public static Renderer GetInstance()
     {
         // TODO: Your code here
-        throw new NotImplementedException();
+        if (instance == null)
+        {
+            instance = new Renderer();
+        }
+        return instance;
     }
 
     public void ModifyBoundingBox(int x, int y, int width, int height)
     {
-        // TODO: Your code here
-        throw new NotImplementedException();
+        BoundingBox = new Rectangle(x, y, width, height);   
     }
 
     public Ball CreateBall(Vector2 pposition, Vector2 pvelocity, float psize, Color pcolor)
     {
-        // TODO: Your code here
-        throw new NotImplementedException();
+        return new Ball(pposition, pvelocity, psize, pcolor);
     }
 
     public List<Ball> PerformBallPhysics(List<Ball> balls)
     {
         // TODO: Your code here
-        // If a ball is outside of the X bounds, flip the X velocity.
-        // If a ball is outside of the Y bounds, flip the Y velocity.
-        // Ensure no ball is outside of the boundary.
+        foreach (Ball ball in balls)
+        {
+            if (IsBallOutsideXBoundary(ball))
+            {
+                int index = balls.IndexOf(ball);
+                balls.Remove(ball);
+                Ball newBall = new Ball(ball.Position, new Vector2(-ball.Velocity.X, ball.Velocity.Y), ball.Size, ball.Color);
+                balls.Insert(index, newBall);
+            }
+            if (IsBallOutsideYBoundary(ball))
+            {
+                int index = balls.IndexOf(ball);
+                balls.Remove(ball);
+                Ball newBall = new Ball(ball.Position, new Vector2(ball.Velocity.X, -ball.Velocity.Y), ball.Size, ball.Color);
+                balls.Insert(index, newBall);
+            }
+            // If a ball is outside of the X bounds, flip the X velocity.
+            // If a ball is outside of the Y bounds, flip the Y velocity.
+            // Ensure no ball is outside of the boundary.
+        }
         return balls;
     }
 
